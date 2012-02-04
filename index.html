@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Routr - route based initialization for JavaScript</title>
+	<script src="routr.js"></script>
+	</script>
+	Routr
+	.root("/init.js")
+	.bind("/", function() {
+		console.log("index");
+	})
+	.bind("/home", function() {
+		console.log("home");
+	})
+	.bind("/home/news", function() {
+		console.log("home news");
+	}, true)
+	.bind("/home/news/new", function() {
+		console.log("home news new");
+	}, true)
+	.bind("/group", function() {
+		console.log("group");
+	})
+	.run();
+</head>
+<body>
+
