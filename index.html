@@ -2,26 +2,25 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Routr - route based initialization for JavaScript</title>
+	<title>Routr - Route specific initialization for JavaScript</title>
 	<script src="routr.js"></script>
-	</script>
+	<script>
 	Routr
-	.bind("/", function() {
-		console.log("index");
-	})
-	.bind("/home", function() {
-		console.log("home");
-	})
-	.bind("/home/news", function() {
-		console.log("home news");
-	}, true)
-	.bind("/home/news/new", function() {
-		console.log("home news new");
-	}, true)
-	.bind("/group", function() {
-		console.log("group");
-	})
-	.run();
+		.bind("/", function() {
+			console.log("index");
+		})
+		.bind("home", function() {
+			console.log("home");
+		})
+		.bind("/group", function() {
+			console.log("group");
+		})
+		.bind(/\/group\/(\w+)\/(\d+)/, function() {
+			console.log("group "+this.group+", "+this.id);
+		}, false, ['group','id'] );
+		
+		Routr.run();
+	</script>
 </head>
 <body>
 
