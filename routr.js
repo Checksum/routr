@@ -10,9 +10,7 @@
  */
 var Routr = function() {
 	var	base_url,
-			fns = {},
-			before_fn,
-			after_fn;
+		fns = {};
 	
 	// Simple test to check if the path is a regex
 	function isRegex(path) {
@@ -22,15 +20,9 @@ var Routr = function() {
 	// Sanitizes our path by adding a / to the front and deleting
 	// the trailing / if any
 	function sanitize(path) {
-		if( path == '/') {
-			return path;
-		}
-		if( path.charAt(0) !== '/' ) {
-			path = '/'+path;
-		}
-		if( path.charAt(path.length - 1) == '/' ) {
-			path = path.substring(0, path.length - 1);
-		}
+		if (path == '/') return path;
+		if (path.charAt(0) !== '/') path = '/'+path;
+		if (path.charAt(path.length - 1) == '/') path = path.substring(0, path.length - 1);
 		return path;
 	}
 
@@ -41,18 +33,6 @@ var Routr = function() {
 		// set the url as /app
 		root: function(url) {
 			base_url = sanitize(url);
-			return this;
-		},
-
-		// Common function to execute before the paths are matched
-		before: function(fn) {
-			before_fn = fn;
-			return this;
-		},
-
-		// Common function to execute after the paths are matched
-		after: function(fn) {
-			after_fn = fn;
 			return this;
 		},
 
@@ -81,12 +61,12 @@ var Routr = function() {
 		// Run our app
 		run: function() {
 			var path = document.location.pathname,
-					route,
-					param,
-					params = {},
-					i	= 0,
-					regex,
-					paramName;
+				route,
+				param,
+				params = {},
+				i	= 0,
+				regex,
+				paramName;
 
 			// Get our pathname and remove the base_url if set
 			if( base_url && base_url !== '' ) {
@@ -118,9 +98,6 @@ var Routr = function() {
 							this.param = params;
 						}
 		
-						// Common before fn
-						before_fn && before_fn.apply(this);
-						
 						// Matching and executing all our parent paths if chaining
 						if( fns[route].chain ) {
 							var slugs = path.split("/"),
@@ -133,13 +110,9 @@ var Routr = function() {
 						
 						// Main route callback function
 						fns[route].fn && fns[route].fn.apply(this);
-						
-						// Common after fn
-						after_fn && after_fn.apply(this);
 					}
 				}
 			}
 		}
 	});
 }();
-
