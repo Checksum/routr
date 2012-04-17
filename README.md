@@ -54,19 +54,7 @@ Routr.root("/app");
 	</tr>
 </table>
 
-3. Add optional common before and after callback functions which are run for every route (if necessary)
-
-```javascript
-Routr
-.before(function() {
-	console.log("I will be run before the callback for every matched route");
-})
-.after(function() {
-	console.log("And I will be run after the callback for every matched route");
-});
-```
-
-4. Run the app by calling Routr.run();
+3) Run the app by calling Routr.run();
 
 #### Example
 
