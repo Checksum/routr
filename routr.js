@@ -8,24 +8,24 @@
  * Demo		: http://iambot.net/demo/routr/
  *
  */
-var Routr = function() {
+var Routr = (function() {
 	var	base_url,
 		fns = {};
 	
 	// Simple test to check if the path is a regex
 	function isRegex(path) {
-		return typeof path === 'object' && typeof path.exec === 'function';
+    	return typeof path === 'object' && typeof path.exec === 'function';
 	}
 	
 	// Sanitizes our path by adding a / to the front and deleting
 	// the trailing / if any
 	function sanitize(path) {
-		if (path == '/') return path;
+	    if (path == '/') return path;
 		if (path.charAt(0) !== '/') path = '/'+path;
 		if (path.charAt(path.length - 1) == '/') path = path.substring(0, path.length - 1);
 		return path;
 	}
-
+    
 	// Our magic starts here
 	return ({
 		// Set the root path for the application
@@ -115,4 +115,4 @@ var Routr = function() {
 			}
 		}
 	});
-}();
+})();
