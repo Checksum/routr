@@ -1,14 +1,16 @@
 /**
  * Routr - Route specific initialization for JavaScript
  *
- * Version	: 0.3
- * Date		: Apr 17, 2012
- * Author  	: Srinath
+ * Version	: 0.3.1
+ * Date		: Feb 22, 2013
+ * Author   : Srinath
  * Source	: http://github.com/Checksum/routr
  * Demo		: http://iambot.net/demo/routr/
  *
  */
 var Routr = (function() {
+    "use strict";
+    
 	var	base_url,
 		fns = {};
 	
@@ -20,9 +22,15 @@ var Routr = (function() {
 	// Sanitizes our path by adding a / to the front and deleting
 	// the trailing / if any
 	function sanitize(path) {
-	    if (path == '/') return path;
-		if (path.charAt(0) !== '/') path = '/'+path;
-		if (path.charAt(path.length - 1) == '/') path = path.substring(0, path.length - 1);
+	    if (path === '/') {
+            return path;
+	    }
+		if (path.charAt(0) !== '/') {
+            path = '/' + path;
+		}
+		if (path.charAt(path.length - 1) === '/') {
+            path = path.substring(0, path.length - 1);
+		}
 		return path;
 	}
     
@@ -64,23 +72,27 @@ var Routr = (function() {
 				route,
 				param,
 				params = {},
-				i	= 0,
+				i,
+                len,
 				regex,
-				paramName;
+				paramName,
+                slugs,
+                slug;
 
 			// Get our pathname and remove the base_url if set
-			if( base_url && base_url !== '' ) {
+			if (base_url && base_url !== '') {
 				path = path.replace(base_url, '');
 			}
 			// Check if each route we have matches the path
-			for( route in fns ) {
-				if( fns.hasOwnProperty(route) ) {
-					regex = '^'+route+'\\/?$';
+			for (route in fns) {
+				if (fns.hasOwnProperty(route)) {
+					regex = '^' + route + '\\/?$';
 					var matches = path.match(regex);
-					if( matches ) {
+					if (matches) {
 						// We don't need the first match as its the whole string
 						path = matches.shift();
-						for( i=0; i<matches.length; i++ ) {
+                        len = matches.length;
+						for (i = 0; i < len; i++) {
 							paramName = fns[route].param && fns[route].param[i] || 0;
 							params[paramName] = matches[i];
 						}
@@ -89,27 +101,27 @@ var Routr = (function() {
 						// Ex: if ['name','number'] is sent then we can access its
 						// values inside the function as this.name and this.number.
 						// Else, we can access the entire array as this.param[0]
-						if( fns[route].param && fns[route].param.length == matches.length ) {
-							for( param in params ) {
+						if (fns[route].param && fns[route].param.length === len) {
+							params.forEach(function(param) {
 								this[param] = params[param];
-							}
+							});
 						}
 						else {
 							this.param = params;
 						}
 		
 						// Matching and executing all our parent paths if chaining
-						if( fns[route].chain ) {
-							var slugs = path.split("/"),
-									slug = '';
-							for( var i=1; i<slugs.length-1; i++ ) {
-								slug += '/'+slugs[i];
+						if (fns[route].chain) {
+						    slugs = path.split("/");
+						    slug = '';
+							for (i = 1; i < slugs.length - 1; i++) {
+								slug += '/' + slugs[i];
 								fns[slug] && fns[slug].fn && fns[slug].fn.call(this);
 							}
 						}
 						
 						// Main route callback function
-						fns[route].fn && fns[route].fn.apply(this);
+						fns[route].fn && fns[route].fn.call(this);
 					}
 				}
 			}
