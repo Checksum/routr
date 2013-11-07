@@ -1,11 +1,11 @@
 /**
  * Routr - Route specific initialization for JavaScript
  *
- * Version	: 0.3.1
- * Date		: Feb 22, 2013
+ * Version	: 0.3.2
+ * Date		  : Nov 07, 2013
  * Author   : Srinath
- * Source	: http://github.com/Checksum/routr
- * Demo		: http://iambot.net/demo/routr/
+ * Source   : http://github.com/Checksum/routr
+ * Demo     : http://iambot.net/demo/routr/
  *
  */
 var Routr = (function() {
